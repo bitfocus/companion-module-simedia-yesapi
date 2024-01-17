@@ -9,8 +9,12 @@
 	"bugs": "https://github.com/bitfocus/companion-module-simedia-yesapi/issues",
 	"maintainers": [
 		{
-			"name": "Zanatta Luca",
+			"name": "Luca Zanatta",
 			"email": "luca.zanatta@si-media.tv"
+		},
+		{
+			"name": "Alessandro Albanese",
+			"email": "alessandro.albanese@si-media.tv"
 		}
 	],
 	"runtime": {

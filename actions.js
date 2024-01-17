@@ -75,11 +75,95 @@ exports.initActions = function () {
 			self.actionCallManager('select' , 'clipDown');
 		},
 	}
-		actions['loop'] = {
+	actions['loop'] = {
 		name: 'loop',
 		options: [],
 		callback: () => {
 			self.actionCallManager('loop' , 'loop');
+		},
+	}
+	actions['decACue'] = {
+		name: 'cue',
+		options: [],
+		callback: () => {
+			self.actionCallManager('decodercue' , 'decACue');
+		},
+	}
+	actions['decAPlay'] = {
+		name: 'play',
+		options: [],
+		callback: () => {
+			self.actionCallManager('play' , 'decA');
+		},
+	}
+	actions['decAPause'] = {
+		name: 'pause',
+		options: [],
+		callback: () => {
+			self.actionCallManager('pause' , 'decA');
+		},
+	}
+	actions['decANext'] = {
+		name: 'next',
+		options: [],
+		callback: () => {
+			self.actionCallManager('decodernext' , 'decANext');
+		},
+	}
+	actions['decALoop'] = {
+		name: 'loop',
+		options: [],
+		callback: () => {
+			self.actionCallManager('loop' , 'decALoop');
+		},
+	}
+	actions['decAStop'] = {
+		name: 'stop',
+		options: [],
+		callback: () => {
+			self.actionCallManager('stop' , 'decA');
+		},
+	}
+	actions['decBCue'] = {
+		name: 'cue',
+		options: [],
+		callback: () => {
+			self.actionCallManager('decodercue' , 'decBCue');
+		},
+	}
+	actions['decBPlay'] = {
+		name: 'play',
+		options: [],
+		callback: () => {
+			self.actionCallManager('play' , 'decB');
+		},
+	}
+	actions['decBPause'] = {
+		name: 'pause',
+		options: [],
+		callback: () => {
+			self.actionCallManager('pause' , 'decB');
+		},
+	}
+	actions['decBNext'] = {
+		name: 'next',
+		options: [],
+		callback: () => {
+			self.actionCallManager('decodernext' , 'decBNext');
+		},
+	}
+	actions['decBLoop'] = {
+		name: 'loop',
+		options: [],
+		callback: () => {
+			self.actionCallManager('loop' , 'decBLoop');
+		},
+	}
+	actions['decBStop'] = {
+		name: 'stop',
+		options: [],
+		callback: () => {
+			self.actionCallManager('stop' , 'decB');
 		},
 	}
 	this.setActionDefinitions(actions)

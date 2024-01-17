@@ -6,18 +6,14 @@ const variables = require('./variables')
 const feedback = require('./feedbacks')
 
 class ModuleInstance extends InstanceBase {
+	//Variables of decoders
+		decoderA;
+		decoderB;
 	//An object array of all the clips in the current rundown
-		clips 
-	//Variables of the current status refreshed continuously (based on the variable 'workerCheckStatusTime')
-		currnetClipParamsId;
-		currentClipName;
-		currentClipLength;
-		currentClipStatus;
-		currentClipLoopNumber;
-		currentClipId;
-		currentClipIndexOf;
+		clips;
 	//Variables of the current selection ()
 		selectedClipId;
+		selectedClipIndex;
 	//Variables for the string concatenation during the http request  
 		httpUrlPlayerControl;
 		httpEndpoint;
@@ -111,6 +107,7 @@ class ModuleInstance extends InstanceBase {
 			}, 3000)
 	}
 
+	/** lanch Config */
 	lanchConfig(){
 		if (this.config.host && this.config.port && this.config.pass && this.config.user) {
 			try {
@@ -127,47 +124,39 @@ class ModuleInstance extends InstanceBase {
 			console.log('Missing Confing unable to connect')
 		}
 	}
-	/**
-	 * Close the calls for token refresher and status request
-	 */
+
+	/** Close the calls for token refresher and status request */
 	endTokenAndStatus(){
 		this.openConnectionForToken = false;
 		this.openConnectionForStatus = false;
 		this.updateStatus(InstanceStatus.Disconnected)
 	}
-	/*
-	* Start Token and Status requests
-	*/
+
+	/** Start Token and Status requests */
 	async loadingOrder(){
 		this.updateStatus(InstanceStatus.Connecting)
 		this.openConnectionForToken = true;
 		this.openConnectionForStatus = true;
 		this.checkStatusTime = this.config.requestStatus;
-		this.currentClipIndexOf = 0;
-		this.currentClipId = 'Finding id...';
-		this.currentClipName = 'Finding asset...';
+		this.selectedClipIndex = 0;
 		this.createUrl();
 		this.createEncriptedHeader();
 		await this.connectToYesApyGatweway();
 		await this.getCurrentStatus();
 	}
-	/**
-	 * String concatenarion to create the endpoints
-	 */
+
+	/** String concatenarion to create the endpoints */
 	createUrl(){
 		this.httpEndpoint = `http://${this.config.host}:${this.config.port}/v1/`
 		this.httpUrlPlayerControl = `http://${this.config.host}:${this.config.port}/v1/studios/${this.config.studioId}/player/`
 	}
-	/**
-	 * String concatenarion to create and encripted the header
-	 */
+
+	/** String concatenarion to create and encripted the header */
 	createEncriptedHeader(){
 		this.httpAuthorizationHeader = `Basic ${(Buffer.from((`${this.config.user}:${this.config.pass}`), 'utf-8')).toString('base64')}`;
 	}
 
-	/**
- 	* Request to obtain the token from YES API GATEWAY 
- 	*/
+	/** Request to obtain the token from YES API GATEWAY  */
 	async connectToYesApyGatweway(){	
 		try {
 			const url = `${this.httpEndpoint}token`;
@@ -195,9 +184,8 @@ class ModuleInstance extends InstanceBase {
 		}
 		this.tokenStatusRefresher()
 	}
-	/**
-	 * Promise for setting the time of token refresher
-	 */
+
+	/** Promise for setting the time of token refresher */
 	async tokenStatusRefresher(){
 		return new Promise((resolve, reject) => {
 			setTimeout(() => {
@@ -213,9 +201,8 @@ class ModuleInstance extends InstanceBase {
      console.log("Refresh token Ended");
 		})
 	}
-	/*
-	* Request the status of the player
-	*/
+
+	/** Request the status of the player */
 	async getCurrentStatus(){
 		try {	
 			const url = `${this.httpUrlPlayerControl}status`;
@@ -233,78 +220,118 @@ class ModuleInstance extends InstanceBase {
 			The current selection of the clip (variable: currentClip...) is made in this method and use in the request of the other buttons(play, pause,...)
 			When you open a rundown or init the app, checkListOfClips true set for only once the selected clip at the first element of the clips.
 			*/
+			this.decoderA = data.decoderA;
+			this.decoderB = data.decoderB;
 			if (data.clips.length){
-				console.log('< Working with clip:',this.currentClipId,'>')
+				console.log('< Working with clip:',this.selectedClipId,'>')
 				if (this.checkListOfClips === true){
 					this.doActions(`${this.httpUrlPlayerControl}select?clipId=${data.clips[0].id}`)
 					this.checkListOfClips = false;
 				}
-				if (data.selectedClip.id === this.currentClipId){ 
-					this.currentClipStatus = data.clips[this.currentClipIndexOf].status; 
-					this.setVariableNameAndStatus();
-					this.checkFeedbacks();
-				} else {
+				if (data.selectedClip.id !== this.selectedClipId) {
 					this.clips = data.clips;
 					this.selectedClipId = data.selectedClip.id;
-					this.currentClipIndexOf = data.clips.findIndex(object => {
+					this.selectedClipIndex = data.clips.findIndex(object => {
 						return object.id === data.selectedClip.id;
 					})
-					if (this.currentClipIndexOf === -1){this.currentClipIndexOf = 0}
-					this.currentClipName = data.clips[this.currentClipIndexOf].title;
-					this.currentClipId = data.clips[this.currentClipIndexOf].id;
-					this.currentClipLength = data.clips.length;
-					this.currnetClipParamsId = `?clipId=${this.currentClipId}`
-					this.currentClipStatus = data.clips[this.currentClipIndexOf].status;
-					this.setVariableNameAndStatus();
-					this.checkFeedbacks()
+					if (this.selectedClipIndex === -1){this.selectedClipIndex = 0}
 				}
 			} else {
 					console.log(`< Rundown or Clip not found >`)
-					this.currentClipStatus = 500;
-					this.currentClipName = 'NO DATA'
-					this.setVariableNameAndStatus()
-					this.checkFeedbacks()
 					this.checkListOfClips = true;
 			}
+			this.setVariableNameAndStatus();
+			this.checkFeedbacks();
 
 		} catch (error) {
 			console.log('Error in reach the current clip status: ',error)
 		}
 		this.clipStatusRefresher();
 	}
-	/*
-	* Change the name of the button preset (check in presets.js) "Show Currtent Clip" and "Show Currtent Status"
-	*/
+
+	/** Change the name of the button preset (check in presets.js) "Show Currtent Clip" and "Show Currtent Status" */
 	setVariableNameAndStatus(){
-		this.setVariableValues({ [`NAME_CURRENT_CLIP`]: `${this.currentClipName}` })
-		let status = this.currentClipStatus;
-		switch (status) {
-			case 0: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'CUEING'});break;
-			case 1: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'CUED'});break;
-			case 2: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'PREROLL'});break;
-			case 3: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'ON AIR'});break;
-			case 4: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'READY'});break;
-			case 5: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'OFFLINE'});break;
-			case 6: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'NOT LINKED'});break;
-			case 7: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'EXCLUDED'});break;
-			case 8: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'AS RUN'});break;
-			case 9: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'PAUSED'});break;
-			case 10: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'PLACEHOLDER'});break;
-			case 11: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'LOOP'}); break;
-			case 12: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'TP1'}); break;
-			case 13: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'EMPTY STORY'}); break;
-			case 14: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'TP1 ON AIR'}); break;
-			case 15: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'TP2'}); break;
-			case 16: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'TP2 ON AIR'}); break;
-			case 17: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'TP3'}); break;
-			case 18: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'TP3 ON AIR'}); break;
-			case 19: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'TP1 CUED'}); break;
-			case 20: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'TP2 CUED'}); break;
-			case 21: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'TP3 CUED'}); break;
-			default: 	this.setVariableValues({['STATUS_CURRENT_CLIP']: 'NO STATUS'});break;
-			}
+		this.setVariableValues({ [`SELECTED_CLIP_TITLE`]: `${this.clips[this.selectedClipIndex]?.title || 'NO DATA'}` });
+		switch (this.clips[this.selectedClipIndex]?.status) {
+			case 0: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'CUEING'}); break;
+			case 1: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'CUED'}); break;
+			case 2: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'PREROLL'}); break;
+			case 3: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'ON AIR'}); break;
+			case 4: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'READY'}); break;
+			case 5: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'OFFLINE'}); break;
+			case 6: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'NOT LINKED'}); break;
+			case 7: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'EXCLUDED'}); break;
+			case 8: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'AS RUN'}); break;
+			case 9: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'PAUSED'}); break;
+			case 10: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'PLACEHOLDER'}); break;
+			case 11: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'LOOP'}); break;
+			case 12: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'TP1'}); break;
+			case 13: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'EMPTY STORY'}); break;
+			case 14: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'TP1 ON AIR'}); break;
+			case 15: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'TP2'}); break;
+			case 16: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'TP2 ON AIR'}); break;
+			case 17: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'TP3'}); break;
+			case 18: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'TP3 ON AIR'}); break;
+			case 19: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'TP1 CUED'}); break;
+			case 20: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'TP2 CUED'}); break;
+			case 21: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'TP3 CUED'}); break;
+			default: 	this.setVariableValues({['SELECTED_CLIP_STATUS']: 'NO STATUS'});break;
+		}
+		this.setVariableValues({ [`DECODER_A_CLIP_TITLE`]: `${this.decoderA?.currentClip?.title || 'NO DATA'}` });
+		switch (this.decoderA?.currentClip?.status) {
+			case 0: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'CUEING'}); break;
+			case 1: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'CUED'}); break;
+			case 2: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'PREROLL'}); break;
+			case 3: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'ON AIR'}); break;
+			case 4: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'READY'}); break;
+			case 5: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'OFFLINE'}); break;
+			case 6: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'NOT LINKED'}); break;
+			case 7: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'EXCLUDED'}); break;
+			case 8: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'AS RUN'}); break;
+			case 9: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'PAUSED'}); break;
+			case 10: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'PLACEHOLDER'}); break;
+			case 11: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'LOOP'}); break;
+			case 12: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'TP1'}); break;
+			case 13: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'EMPTY STORY'}); break;
+			case 14: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'TP1 ON AIR'}); break;
+			case 15: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'TP2'}); break;
+			case 16: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'TP2 ON AIR'}); break;
+			case 17: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'TP3'}); break;
+			case 18: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'TP3 ON AIR'}); break;
+			case 19: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'TP1 CUED'}); break;
+			case 20: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'TP2 CUED'}); break;
+			case 21: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'TP3 CUED'}); break;
+			default: 	this.setVariableValues({['DECODER_A_CLIP_STATUS']: 'NO STATUS'});break;
+		}
+		this.setVariableValues({ [`DECODER_B_CLIP_TITLE`]: `${this.decoderB?.currentClip?.title || 'NO DATA'}` });
+		switch (this.decoderB?.currentClip?.status) {
+			case 0: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'CUEING'}); break;
+			case 1: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'CUED'}); break;
+			case 2: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'PREROLL'}); break;
+			case 3: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'ON AIR'}); break;
+			case 4: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'READY'}); break;
+			case 5: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'OFFLINE'}); break;
+			case 6: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'NOT LINKED'}); break;
+			case 7: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'EXCLUDED'}); break;
+			case 8: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'AS RUN'}); break;
+			case 9: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'PAUSED'}); break;
+			case 10: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'PLACEHOLDER'}); break;
+			case 11: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'LOOP'}); break;
+			case 12: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'TP1'}); break;
+			case 13: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'EMPTY STORY'}); break;
+			case 14: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'TP1 ON AIR'}); break;
+			case 15: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'TP2'}); break;
+			case 16: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'TP2 ON AIR'}); break;
+			case 17: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'TP3'}); break;
+			case 18: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'TP3 ON AIR'}); break;
+			case 19: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'TP1 CUED'}); break;
+			case 20: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'TP2 CUED'}); break;
+			case 21: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'TP3 CUED'}); break;
+			default: 	this.setVariableValues({['DECODER_B_CLIP_STATUS']: 'NO STATUS'});break;
+		}
 	}
 
+	/** clip Status Refresher */
 	async clipStatusRefresher(){
 		return new Promise((resolve, reject) => {
 			setTimeout(() => {
@@ -320,33 +347,55 @@ class ModuleInstance extends InstanceBase {
      console.log("Clips status check: ENDED");
 		})
 	}
-	/**
-	 * Create Endpoint based on the different ACTIONS params
-	 */
+
+	/** Create Endpoint based on the different ACTIONS params */
 	actionCallManager(action , param){
 		if(param){
 			switch(param){
 				case 'id':
-				this.doActions(`${this.httpUrlPlayerControl}${action}${this.currnetClipParamsId}`) 
-				return 
+				this.doActions(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.selectedClipId || 0}`}`) 
+				break; 
 				case 'clipUp':
 				this.changeClipInInUseUp(`${this.httpUrlPlayerControl}${action}`)
-				return 
+				break; 
 				case 'clipDown':
 				this.changeClipInInUseDown(`${this.httpUrlPlayerControl}${action}`)
-				return 
+				break; 
 				case 'loop':
-				this.setLoopClipById(`${this.httpUrlPlayerControl}${action}${this.currnetClipParamsId}`)
-				return
+				this.setLoopClipById(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.selectedClipId || 0}`}`)
+				break;
+				case 'decA':
+				this.doActions(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.decoderA?.currentClip?.id || 0}`}`) 
+				break; 
+				case 'decACue':
+				this.doActions(`${this.httpUrlPlayerControl}${action}${`?decoderIndex=0&clipId=${this.selectedClipId || 0}`}`)
+				break;
+				case 'decANext':
+				this.doActions(`${this.httpUrlPlayerControl}${action}${`?decoderIndex=0`}`)
+				break;			
+				case 'decALoop':
+				this.setLoopClipById(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.decoderA?.currentClip?.id || 0}`}`)
+				break;
+				case 'decB':
+				this.doActions(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.decoderB?.currentClip?.id || 0}`}`) 
+				break; 	
+				case 'decBCue':
+				this.doActions(`${this.httpUrlPlayerControl}${action}${`?decoderIndex=1&clipId=${this.selectedClipId || 0}`}`)
+				break;
+				case 'decBNext':
+				this.doActions(`${this.httpUrlPlayerControl}${action}${`?decoderIndex=1`}`)
+				break;			
+				case 'decBLoop':
+				this.setLoopClipById(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.decoderB?.currentClip?.id || 0}`}`)
+				break;
 			}
 		} else {
 				this.doActions(`${this.httpUrlPlayerControl}${action}`) 
 				return 
 		}
 	}
-	/**
-	 * Call for all the action
-	 */
+
+	/** Call for all the action  */
 	doActions(endpoint){
 	const response = fetch(endpoint,{
 		method: 'put',
@@ -356,35 +405,32 @@ class ModuleInstance extends InstanceBase {
 			},
 		});
 	}
-	/*
-	* Method in the button ArrowUp that change the id of the selection
-	*/
+
+	/** Method in the button ArrowUp that change the id of the selection */
 	changeClipInInUseUp(endpoint){
-		if(this.currentClipIndexOf === 0){
+		if(this.selectedClipIndex === 0){
 			return
 		} else {
-			this.doActions(`${endpoint}?clipId=${this.clips[this.currentClipIndexOf-1].id}`);
+			this.doActions(`${endpoint}?clipId=${this.clips[this.selectedClipIndex-1].id}`);
 		}
 	}
-	/*
-	* Method in the button ArrowDown that change the id of the selection
-	*/
+
+	/** Method in the button ArrowDown that change the id of the selection */
 	changeClipInInUseDown(endpoint){
-		if(this.currentClipIndexOf === (this.currentClipLength-1)){
+		if(this.selectedClipIndex === (this.clips.length - 1)){
 			return
 		} else {
-			this.doActions(`${endpoint}?clipId=${this.clips[this.currentClipIndexOf+1].id}`);
+			this.doActions(`${endpoint}?clipId=${this.clips[this.selectedClipIndex+1].id}`);
 		}
 	}
-	/*
-	* Check if the clip is already on loop or not 
-	*/
+
+	/** Check if the clip is already on loop or not  */
 	setLoopClipById(endpoint){
-		this.currentClipLoopNumber = 1
-		if (this.currentClipStatus === 11){
-			this.currentClipLoopNumber = 0
+		let loop = 1
+		if (this.clips[this.selectedClipIndex]?.status === 11){
+			loop = 0
 		}
-    this.doActions(`${endpoint}&loop=${this.currentClipLoopNumber}`);
+    this.doActions(`${endpoint}&loop=${loop}`);
 	}
 }
 runEntrypoint(ModuleInstance, UpgradeScripts)

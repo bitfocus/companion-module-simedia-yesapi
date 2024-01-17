@@ -14,7 +14,7 @@ exports.initFeedback = function () {
     options: [{
     }],
     callback: () => {
-      if (this.currentClipStatus === 500){
+      if (this.clips[this.selectedClipIndex]?.status === undefined){
         return true
       }else {
         return false
@@ -30,14 +30,14 @@ exports.initFeedback = function () {
     options: [{
     }],
     callback: () => {
-      if (this.currentClipStatus === 500 || this.currentClipStatus === 13){
+      if (this.clips[this.selectedClipIndex]?.status === undefined || this.clips[this.selectedClipIndex]?.status === 13){
         return true
       }else {
         return false
       }
     },
 	}
-
+  
   feedbacks['clipIsCuing'] = {
 		type: 'boolean',
     name: 'Change color based on status',
@@ -46,7 +46,7 @@ exports.initFeedback = function () {
     options: [{
     }],
     callback: () => {
-      if (this.currentClipStatus === 0){
+      if (this.clips[this.selectedClipIndex]?.status === 0){
         return true
       }else {
         return false
@@ -62,7 +62,7 @@ exports.initFeedback = function () {
     options: [{
     }],
     callback: () => {
-      if (this.currentClipStatus === 1 || this.currentClipStatus === 19 || this.currentClipStatus === 20 || this.currentClipStatus === 21 ){
+      if (this.clips[this.selectedClipIndex]?.status === 1 || this.clips[this.selectedClipIndex]?.status === 19 || this.clips[this.selectedClipIndex]?.status === 20 || this.clips[this.selectedClipIndex]?.status === 21 ){
         return true
       }else {
         return false
@@ -78,7 +78,7 @@ exports.initFeedback = function () {
     options: [{
     }],
     callback: () => {
-      if (this.currentClipStatus === 3 || this.currentClipStatus === 14 || this.currentClipStatus === 16 || this.currentClipStatus === 18){
+      if (this.clips[this.selectedClipIndex]?.status === 3 || this.clips[this.selectedClipIndex]?.status === 14 || this.clips[this.selectedClipIndex]?.status === 16 || this.clips[this.selectedClipIndex]?.status === 18){
         return true
       }else {
         return false
@@ -94,7 +94,7 @@ exports.initFeedback = function () {
     options: [{
     }],
     callback: () => {
-      if (this.currentClipStatus === 4){
+      if (this.clips[this.selectedClipIndex]?.status === 4){
         return true
       }else {
         return false
@@ -110,7 +110,7 @@ exports.initFeedback = function () {
     options: [{
     }],
     callback: () => {
-      if (this.currentClipStatus === 5){
+      if (this.clips[this.selectedClipIndex]?.status === 5){
         return true
       }else {
         return false
@@ -126,7 +126,7 @@ exports.initFeedback = function () {
     options: [{
     }],
     callback: () => {
-      if (this.currentClipStatus === 9){
+      if (this.clips[this.selectedClipIndex]?.status === 9){
         return true
       }else {
         return false
@@ -142,7 +142,263 @@ exports.initFeedback = function () {
     options: [{
     }],
     callback: () => {
-      if (this.currentClipStatus === 11){
+      if (this.clips[this.selectedClipIndex]?.status === 11){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decANoClip'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderA?.currentClip?.status === undefined || this.decoderA?.currentClip?.status === 13){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decAClipIsCuing'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderA?.currentClip?.status === 0){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decAClipIsCued'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderA?.currentClip?.status === 1 || this.decoderA?.currentClip?.status === 19 || this.decoderA?.currentClip?.status === 20 || this.decoderA?.currentClip?.status === 21 ){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decAClipIsOnAir'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderA?.currentClip?.status === 3 || this.decoderA?.currentClip?.status === 14 || this.decoderA?.currentClip?.status === 16 || this.decoderA?.currentClip?.status === 18){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decAClipIsReady'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderA?.currentClip?.status === 4){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decAClipIsOffline'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderA?.currentClip?.status === 5){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decAClipIsPaused'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderA?.currentClip?.status === 9){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decAClipIsInLoop'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderA?.currentClip?.status === 11){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decBNoClip'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderB?.currentClip?.status === undefined || this.decoderB?.currentClip?.status === 13){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decBClipIsCuing'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderB?.currentClip?.status === 0){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decBClipIsCued'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderB?.currentClip?.status === 1 || this.decoderB?.currentClip?.status === 19 || this.decoderB?.currentClip?.status === 20 || this.decoderB?.currentClip?.status === 21 ){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decBClipIsOnAir'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderB?.currentClip?.status === 3 || this.decoderB?.currentClip?.status === 14 || this.decoderB?.currentClip?.status === 16 || this.decoderB?.currentClip?.status === 18){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decBClipIsReady'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderB?.currentClip?.status === 4){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decBClipIsOffline'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderB?.currentClip?.status === 5){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decBClipIsPaused'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderB?.currentClip?.status === 9){
+        return true
+      }else {
+        return false
+      }
+    },
+	}
+
+  feedbacks['decBClipIsInLoop'] = {
+		type: 'boolean',
+    name: 'Change color based on status',
+    defaultStyle: {
+    },
+    options: [{
+    }],
+    callback: () => {
+      if (this.decoderB?.currentClip?.status === 11){
         return true
       }else {
         return false
