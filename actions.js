@@ -26,6 +26,13 @@ exports.initActions = function () {
 			self.actionCallManager('cue' , 'id');
 		},
 	}
+	actions['recue'] = {
+		name: 'recue',
+		options: [],
+		callback: () => {
+			self.actionCallManager('recue' , 'id');
+		},
+	}
 	actions['play'] = {
 		name: 'play',
 		options: [],
@@ -89,6 +96,13 @@ exports.initActions = function () {
 			self.actionCallManager('decodercue' , 'decACue');
 		},
 	}
+	actions['decARecue'] = {
+		name: 'recue',
+		options: [],
+		callback: () => {
+			self.actionCallManager('recue' , 'decA');
+		},
+	}
 	actions['decAPlay'] = {
 		name: 'play',
 		options: [],
@@ -129,6 +143,13 @@ exports.initActions = function () {
 		options: [],
 		callback: () => {
 			self.actionCallManager('decodercue' , 'decBCue');
+		},
+	}
+	actions['decBRecue'] = {
+		name: 'recue',
+		options: [],
+		callback: () => {
+			self.actionCallManager('recue' , 'decB');
 		},
 	}
 	actions['decBPlay'] = {
