@@ -222,14 +222,14 @@ class ModuleInstance extends InstanceBase {
 			*/
 			this.decoderA = data.decoderA;
 			this.decoderB = data.decoderB;
+			this.clips = data.clips;
 			if (data.clips.length){
 				console.log('< Working with clip:',this.selectedClipId,'>')
 				if (this.checkListOfClips === true){
 					this.doActions(`${this.httpUrlPlayerControl}select?clipId=${data.clips[0].id}`)
 					this.checkListOfClips = false;
-				}
-				if (data.selectedClip.id !== this.selectedClipId) {
-					this.clips = data.clips;
+				}				
+				if (data.selectedClip.id !== this.selectedClipId) {					
 					this.selectedClipId = data.selectedClip.id;
 					this.selectedClipIndex = data.clips.findIndex(object => {
 						return object.id === data.selectedClip.id;
