@@ -40,6 +40,13 @@ exports.initActions = function () {
 			self.actionCallManager('play' , 'id');
 		},
 	}
+	actions['playGraphics'] = {
+		name: 'playGraphics',
+		options: [],
+		callback: () => {
+			self.actionCallManager('playfirstgraphics' , 'id');
+		},
+	}
 	actions['pause'] = {
 		name: 'pause',
 		options: [],
