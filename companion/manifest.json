@@ -1,5 +1,5 @@
 {
-	"id": "companion-module-simedia-yesapi",
+	"id": "simedia-yesapi",
 	"name": "yes-api-gateway",
 	"shortname": "YAG",
 	"description": "This module created by SiMedia allow you to control the Yes Studio Play through the Elgato Streamdeck",
