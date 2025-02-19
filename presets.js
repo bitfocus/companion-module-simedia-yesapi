@@ -93,6 +93,14 @@ exports.initPresets = function () {
 
 	const png64DecBStop = 'iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAACXBIWXMAACxKAAAsSgF3enRNAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAA/tJREFUeJztnM+PFEUUx79v8UT0YoLssgtBTUy8EMlqVv4DoxG4++umXkQvmhjjwRMqhICcFvWinvQkAUPUowmQ6FkvIiwoKokGMMi6O/PxUNV0TzM1NQ27w/TmfZJJ11a9qnr1nep5VdWdlRzHcRynrViqAGCUjtxpzKyvFhOjdqRtuEAZXKAMLlAGFyjDXU0rpH7t20LT6OwzKIMLlMEFyuACZXCBMjSOYinGbe+2UtHWZ1AGFyiDC5TBBcrgAmVwgTK4QBlcoAwuUAYXKIMLlMEFyuACZXCBMrhAGVygDC5QBhcogwuUwQXKsNYE6ko6LentATavSfpK0tJt9USCpvYj4l/gEDDTYHwbgXeAy3ALT2RSnoyhQCeA6cYDLP2+D/giVd74HcXU86ZB4q0SXUlvStpnZjf6BrZI2iXpKUlbJRWz6oKks5KOSfrSzM7fVu+pr6up/SrRBV6u9T8NzAPLQ9TvAJ8DW3M6tHUGvW5m+yt975b0qaS7Y1ZH0kmFH+xfY96MpDlJO1QGp6uSnjWzo409SEnf1H4V+BqwSr+vEmYEwHXgALBxgJ+TwEFgMdbpAHvWikBXgE2VPndTinMemG0wvm3AL7FuB9i5FgR6v9LfDHA15p8FJhsNMLQxBZyLbfSI30aBFqmEc+DjmH8d2FbzZb5P/b8Jt99EzXY75e32YZsF+rbS1xbKaHWgjy/9BCp4vo/9oVi2TG2x2aatxjeV9C5J6xSi1XsD6ixIeil+FmLeXB+7dxXWVeti2zdok0DfVdJPxutJM/tjQJ1LZnbEzI5IuhTzbnppzMwuSjpVa1tSuwT6rZJ+IF5P9TOssB6YJUS39THvr4Rt0daD1cwVewVvBPxZSU/F68VMnYclfR/TKCwcP0jYFl9ATyRbMYFa8gb+hAbsHlIV2kgxc3Lrlh8lPRo/P0l6TNIrCduireqt3KpbrMoZSQ9Jejxjd83MfpAk4FrMuzdhW7T1czWzrQIdl/SEpB3ApJn9nrDbALxYpON1uW5EWEEXAh0fyoPUKmv4MawewObKQvFgn/JBC8Xn+tgfjmVL9YXiICfGViBJAj6KLi0Cj9TKUluN/dy81ZgF/os2800cGEf2VvybJmwwIWw4pwaNJzHGTcBCbONyozZGP/ah+Ife446dlMcd54DtDcY3SzgiIbbxdFN1x5UT9B6Y7aEUaZGw8UzOBMKsOUx5W3WAVOhv7T8WeMPM9hV/EA67PpN0T8zqKmwdTksqDuc3K0SqOZXrvyuSnjGzY409GOWUuAW6wAs1fzcQZs/SEPU7wCcM8ZvT1hkkhb3VW2a2tyczhOnisc/96n3sc0ZhnXPUzC6M0FfHcRzHuQP8D25TyKnqqAs9AAAAAElFTkSuQmCC'
 
+	const png64Rec = 'iVBORw0KGgoAAAANSUhEUgAAAE8AAABPCAYAAACqNJiGAAAACXBIWXMAADBRAAAwUQECH+EhAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAA0BJREFUeJzt20uLXEUYxvF/5SZeQRdOEshAiI5GF7o0NwJRMN9A/BIKEdwYiYgLl0K+ght3ohJjYjASL9vgxjgxiolgzEYwMxo7I38XpwdECM5Qb3V1J+8Pevv0qYfq7tNVdSCllFJKKaWUUkoppTQrSu8LWKVuBnYDC8A8cO/4tTx+/QQsAhdKKTd7XefUULerr6in1GXXZln9RD2ibus9holTD6gfqStrLOxWVtQP1X29x9Sc+qR6prKwWzmt7u49xnDqJvVNddSouFUj9Q11Y+8xh1C3qZ83Lu2/zqpzvcdeRd2pXpxwcat+UB9tOb5mtyrqI8A5YGur91iDq8D+UsqlFuFNynO4hfgS2Nkif50uAftKKb9GB2+IDnT4sn6X6SgOYBfwng1+RMLLA44Bhxrk1jgIHI0ODf3Yqk8A54HNkblBRsDTpZRvowKjZ95xprM4gC3AO5GBYTNP3QN8FZXX0IFSyhcRQZEz77XArJZejQoKmXnqduAyMAt/i1aAHaWUq7VBUTPvRWajOIBNwAsRQVHlHQ7KmZSQ663+2KpbgN+Ae+ovZ2KWgQdrV6QjZt5jzFZxMCzvVy8aRJU3i6qvO6K8HQEZPczXBkSUd39ARg8P1AZElHd3QEYP1d/TEeX9GZDRwx+1ARHlXQ/I6OH32oCI8q4EZPRwuTYgorzvAjJ6qL7uO/UfxhLwUPd/GKWUEcNmzyw5F3FYKGph4GRQzqSEXG/Uet4c8DPDcs+0m671vPGe6KzMvhMRxcGduYexv5QS8h0dtodRSvka+DQqr5GTUcVB/L7tAvANcFdkbpAR8FQp5UJUYOi+bSllEXg7MjPQW5HFQYODPuoG4BTwbHR2hbPAc6WUvyNDW52SmmO4cd7VIn+dvmc4JXUtOrjFQZ/VW5fnGc7H9fQLcLhFcdCoPIDxgcK9wMVW7/E/fgQOtjrYOBHqnPrZhI/UnlEf7j32EOpG9Zj6V+PSbqive7uchv839XGHp3da+NjhPvP2pu5VP7D+CaCb6vvqM73HNHHqVvXl8axZWmNh19UT6kt2ftZi2p56XGDYyZ8H7hu/lhg2ma4wLJ0v5lOPKaWUUkoppZRSSiml9foHPs2+oYXkkPEAAAAASUVORK5CYII='
+
+	const png64Emergency = 'iVBORw0KGgoAAAANSUhEUgAAAE8AAABPCAYAAACqNJiGAAAACXBIWXMAADBRAAAwUQECH+EhAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAoBJREFUeJzt3D1rFFEUxvH/0UASO9/wK1jbGwKaxs6XxkZUkBR+AksrC2uLdMHGUkGwEUy0CRjTa20VRK0iConHYsZCibPn7pndmVmfH6RJ5h7uPNmZO8zOHBARERERkT9YZrC7LwBngKPtTGeqDoBdM/s+boHi8Nx9DrgFrALnxqnRIw7sAGvAupntlwwu2nF3PwE8A86XjBuI18AVM/sSHRAOr/7EvWI2g/ttE7hoZgeRjY8UFL7NbAcHsAzcjG5cEt5q6UwGKryfocPW3ReBvej2A+fAscgqPBcseIp/B/cCeBOs0ydLwKVDfm/AaeDjqALR8Jqu4zbN7GGwTm+4+08ODw+C160l5zz5i8JLUHgJCi9B4SVEV9tWuft14FGLJe+a2ZMW64V0Eh4wDxxvud7U6bBNUHgJCi9B4SV0tWA0eQp8KhzzYRITGaWP4T0ws+2uJxGhwzZB4SUovASFl6DwEvq42j52973CMffN7PlEZtOgj+GdHWPMydZnEaDDNkHhJSi8BIWX0McF4z3Vox0lPk9iIqP0MbwbujHwH1B4CQovQeElKLyEPq6299y99DuMdTPbmshsGvQxvMtjjNmqf6ZKh22CwktQeAkKL6GrBeMH8LXlelPXSXj1g4hTfxixbTpsExRegsJLUHgJCi8huto2vfm87O5D/CcsNfwt9KZ39H3bBeBbdPuBc2DRzEZeO4Y+MfWLuzvZWQ3E20hwUHbOWxtzMkMT3s/S7hYvqZoYzKoNYKX17hZ1w5arVP1HZtEGcC0aHBReqtQNWy4Ad4B3VCfXIXNgm6rtyUpJQxrI95Kap+ol1cfb+aPsU/WS6uSOjIiIiIjITPoF2apxF8lM52cAAAAASUVORK5CYII=';
+
+	const png64Refresh = 'iVBORw0KGgoAAAANSUhEUgAAAE8AAABPCAYAAACqNJiGAAAACXBIWXMAADBRAAAwUQECH+EhAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAABMBJREFUeJztm8trHVUcx7+TmIfii7aID2xXBlu66EbbZuNOhNYiunAjmiAVbBdu6rIyf0E3JRUEXQraTSzE104sKD5BUJvWYmtquyiKr8YkSj8uTiiXcM+ZmTNnzpm53g9kcyb3e3/nk5k58/hFGjJkyJAwAGPAdOo6XIykLqAfwJiktyU9mroWF62T1yPuidS1FNEqeV0SJ7VIXtfESS2R10VxUgvkdVWclFhel8VJCeV1XZyUSN4giJOkLPYXAuOS3lI5cVckLUn6Q9JVSYvrP59kWXaxsSLbCDAOzBOG88AcsDf1vBonsLiNLAIvABOp59kIwKGGxPVyCZgFop+OGgUYAV6PIBDgNLAj9ZyDAmTAq5EE/g28lHrOQaHaHngB+AL4AVjzlDgHjKaedzAqCMx7PjMG7ABexCw8qxUEnmSQFpOSAnPH5zcBR4DLFQT+r/bAvETGJHAUWC4hcC7CtOJRIDCvkDMFfF1C4Exzs0mAQ2BeMWcSeLNA3l/A9oamUh3g4QAZ/QTmnjknCgR+TBsupIEDwAqwP0DWRoF5jZyiPXCmbr21AEaBb9eLWQUOBMjsvZDOa+RMAF865C1hnvCkAXh+Q0Gh98C8Zs4U7lX4YN1a6xT3eZ+CVoB9AbJHgF0Bcl5xyDtTN9+3qJ0Fh0T6E7JurMBXHLXu9s2u8xj+Oce217Iso0Z2MLIsW5F0zPErz8Sq5QbAWctfchXYHL0gB8Bm7PfC52IXswW4binmvajFlAQ45Th0t/pk+h62u2V/efSOZ2bTfODYtscnsI48G596ZjbNR45tD/oE+sq7zzK+Juk7z8ymOSvpX8u2KZ9AX3m2BeHnLMvWPDMbZb2unyyb7/LJDC3vN8+8WNjqu9UnzFfebZbxa555sVi2jN/iE+Yrb8UyPumZF4vbLeO/+4T5yvvTMn6nZ14s7rCM/+IT5ivvqmV8G6YDqnVg3p7da9n8q0+mr7xFy/iYpAc8M5tmp0x9/VjyCQwtT5Ie8cxsGteF/WfRqgC2Oe4T56MVUgHgQ0u914FNsYs5bymmjU9VtmBv1/B+IFrned77lvFxSbM1cpvgsOznu/gPMoC9jkP3MtCKaz7MC6VLjlrTtKJhOjJtHA2Qvwuo3XQO7MO8W9lIuidAmFZWG8uA19OKnvwc8xYthMD9fQS6XiU0C6bP+KJD4DfAzTXy8/WcNwIJfAzT9AjwPXBT3cy6Bc065IF5c+818R55NLAHPl43qzaYE/LpAoEnfCa+QV5IgQ/VzQgGpmPzWok9sNIK3EdeMIGtguLDF+ArKiwiFnkDK3CuhMBlTAtE4ULikDd4AjFdUydLCATTAvEyjlu5AnkDKXCigkAw98KngMOY/pexnqwieQMpcJRyh3A//gF+xPz/xYWSnxksgZIEPIvpAY5BkAvpVgFsx/QAx2Ag98AMmMH07TXNodTzbQTMvfBB4ExD4uZJ2WccC2APcBw411VxbWl9vV/StEzDzZSku2W6ErZKuqdExLykp9vaJ5MEyl3nLZDoPxq7vjK9K+nJLMtWU3x5l+UlFSd1V96CEouTuilvQdJTqcVJ3ZPXGnFSt+S1SpzUHXmtEyd1Q14rxbUeYJqWNksOGTKkk/wHqEz4ckR7yc8AAAAASUVORK5CYII=';
+
+	const png64Unloop = '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';
+
 	presets['CUE_PRESET'] = {
 		type: 'button',
 		category: 'Media Control',
@@ -1037,6 +1045,226 @@ exports.initPresets = function () {
 				down: [
 					{
 						actionId: 'decBLoop',
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+
+	presets['RECORDER_REC'] = {
+		type: 'button',
+		category: 'Recorder Control',
+		name: 'Rec',
+		style: {
+        png64: png64Rec,
+			size: '14',
+			bgcolor: greyBackgroud,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'recorderRec',
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+
+	presets['RECORDER_STOP'] = {
+		type: 'button',
+		category: 'Recorder Control',
+		name: 'Stop',
+		style: {
+        png64: png64Stop,
+			size: '14',
+			bgcolor: greyBackgroud,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'recorderStop',
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+
+	presets['CHANNEL_PLAY'] = {
+		type: 'button',
+		category: 'Channel Control',
+		name: 'Play',
+		style: {
+        png64: png64Play,
+			size: '14',
+			bgcolor: greyBackgroud,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'channelPlay',
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+
+	presets['CHANNEL_EMERGENCY'] = {
+		type: 'button',
+		category: 'Channel Control',
+		name: 'Emergency',
+		style: {
+        png64: png64Emergency,
+			size: '14',
+			bgcolor: greyBackgroud,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'channelEmergency',
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+
+	presets['CHANNEL_NEXT'] = {
+		type: 'button',
+		category: 'Channel Control',
+		name: 'Next',
+		style: {
+        png64: png64NextClip,
+			size: '14',
+			bgcolor: greyBackgroud,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'channelNext',
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+
+	presets['CHANNEL_LOOP'] = {
+		type: 'button',
+		category: 'Channel Control',
+		name: 'Loop',
+		style: {
+        png64: png64Loop,
+			size: '14',
+			bgcolor: greyBackgroud,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'channelLoop',
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+
+	presets['CHANNEL_UNLOOP'] = {
+		type: 'button',
+		category: 'Channel Control',
+		name: 'Unloop',
+		style: {
+        png64: png64Unloop,
+			size: '14',
+			bgcolor: greyBackgroud,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'channelUnloop',
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+
+	presets['CHANNEL_PAUSE'] = {
+		type: 'button',
+		category: 'Channel Control',
+		name: 'Pause',
+		style: {
+        png64: png64Pause,
+			size: '14',
+			bgcolor: greyBackgroud,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'channelPause',
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+
+	presets['CHANNEL_STOP'] = {
+		type: 'button',
+		category: 'Channel Control',
+		name: 'Stop',
+		style: {
+        png64: png64Stop,
+			size: '14',
+			bgcolor: greyBackgroud,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'channelStop',
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+
+	presets['CHANNEL_REFRESH'] = {
+		type: 'button',
+		category: 'Channel Control',
+		name: 'Refresh',
+		style: {
+        png64: png64Refresh,
+			size: '14',
+			bgcolor: greyBackgroud,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'channelRefresh',
 					},
 				],
 				up: [],

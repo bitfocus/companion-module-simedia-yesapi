@@ -15,9 +15,11 @@ class ModuleInstance extends InstanceBase {
 		selectedClipId;
 		selectedClipIndex;
 	//Variables for the string concatenation during the http request  
-		httpUrlPlayerControl;
+		httpStudioPlayer;
 		httpEndpoint;
 		httpAuthorizationHeader;
+		httpRecorder;
+		httpChannelPlayer;
 		actionEndPoint;
 	//Variables of the token
 		token = '';
@@ -74,16 +76,29 @@ class ModuleInstance extends InstanceBase {
 				type: 'textinput',
 				id: 'studioId',
 				label: 'Current Studio ID',
-				width: 4,
+				width: 6,
 				required: true,
 			},
 			{
 				type: 'number',
 				id: 'requestStatus',
 				label: 'Request Status Time (Min 500 Max 2000)',
+				width: 6,
 				default: 750,
-        min: 500,
-        max: 2000,
+        		min: 500,
+        		max: 2000,
+			},
+			{
+				type: 'textinput',
+				id: 'encoderId',
+				label: 'Current Encoder ID',
+				width: 6
+			},
+			{
+				type: 'textinput',
+				id: 'channelId',
+				label: 'Current Channel ID',
+				width: 6
 			}
 		]
 	}
@@ -147,8 +162,10 @@ class ModuleInstance extends InstanceBase {
 
 	/** String concatenarion to create the endpoints */
 	createUrl(){
-		this.httpEndpoint = `http://${this.config.host}:${this.config.port}/v1/`
-		this.httpUrlPlayerControl = `http://${this.config.host}:${this.config.port}/v1/studios/${this.config.studioId}/player/`
+		this.httpEndpoint = `http://${this.config.host}:${this.config.port}/v1/`;
+		this.httpStudioPlayer = `http://${this.config.host}:${this.config.port}/v1/studios/${this.config.studioId}/player/`;
+		this.httpRecorder = `http://${this.config.host}:${this.config.port}/v1/recorders/`;
+		this.httpChannelPlayer =  `http://${this.config.host}:${this.config.port}/v1/channels/${this.config.channelId}/player/`;
 	}
 
 	/** String concatenarion to create and encripted the header */
@@ -205,7 +222,7 @@ class ModuleInstance extends InstanceBase {
 	/** Request the status of the player */
 	async getCurrentStatus(){
 		try {	
-			const url = `${this.httpUrlPlayerControl}status`;
+			const url = `${this.httpStudioPlayer}status`;
 			const response = await fetch(url, {
 				method: 'get',
 				headers: {
@@ -226,7 +243,7 @@ class ModuleInstance extends InstanceBase {
 			if (data.clips.length){
 				console.log('< Working with clip:',this.selectedClipId,'>')
 				if (this.checkListOfClips === true){
-					this.doActions(`${this.httpUrlPlayerControl}select?clipId=${data.clips[0].id}`)
+					this.doActions(`${this.httpStudioPlayer}select?clipId=${data.clips[0].id}`)
 					this.checkListOfClips = false;
 				}				
 				if (data.selectedClip.id !== this.selectedClipId) {					
@@ -349,56 +366,68 @@ class ModuleInstance extends InstanceBase {
 	}
 
 	/** Create Endpoint based on the different ACTIONS params */
-	actionCallManager(action , param){
-		if(param){
-			switch(param){
-				case 'id':
-				this.doActions(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.selectedClipId || 0}`}`) 
-				break; 
-				case 'clipUp':
-				this.changeClipInInUseUp(`${this.httpUrlPlayerControl}${action}`)
-				break; 
-				case 'clipDown':
-				this.changeClipInInUseDown(`${this.httpUrlPlayerControl}${action}`)
-				break; 
-				case 'loop':
-				this.setLoopClipById(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.selectedClipId || 0}`}`)
-				break;
-				case 'decA':
-				this.doActions(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.decoderA?.currentClip?.id || 0}`}`) 
-				break; 
-				case 'decACue':
-				this.doActions(`${this.httpUrlPlayerControl}${action}${`?decoderIndex=0&clipId=${this.selectedClipId || 0}`}`)
-				break;
-				case 'decANext':
-				this.doActions(`${this.httpUrlPlayerControl}${action}${`?decoderIndex=0`}`)
-				break;			
-				case 'decALoop':
-				this.setLoopClipById(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.decoderA?.currentClip?.id || 0}`}`)
-				break;
-				case 'decB':
-				this.doActions(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.decoderB?.currentClip?.id || 0}`}`) 
-				break; 	
-				case 'decBCue':
-				this.doActions(`${this.httpUrlPlayerControl}${action}${`?decoderIndex=1&clipId=${this.selectedClipId || 0}`}`)
-				break;
-				case 'decBNext':
-				this.doActions(`${this.httpUrlPlayerControl}${action}${`?decoderIndex=1`}`)
-				break;			
-				case 'decBLoop':
-				this.setLoopClipById(`${this.httpUrlPlayerControl}${action}${`?clipId=${this.decoderB?.currentClip?.id || 0}`}`)
-				break;
-			}
-		} else {
-				this.doActions(`${this.httpUrlPlayerControl}${action}`) 
-				return 
-		}
+	actionCallManager(module, action, param = '', body = null){
+		switch (module)
+		{
+			case 'studio':
+				if(param){
+					switch(param){
+						case 'id':
+						this.doActions(`${this.httpStudioPlayer}${action}${`?clipId=${this.selectedClipId || 0}`}`) 
+						break; 
+						case 'clipUp':
+						this.changeClipInInUseUp(`${this.httpStudioPlayer}${action}`)
+						break; 
+						case 'clipDown':
+						this.changeClipInInUseDown(`${this.httpStudioPlayer}${action}`)
+						break; 
+						case 'loop':
+						this.setLoopClipById(`${this.httpStudioPlayer}${action}${`?clipId=${this.selectedClipId || 0}`}`)
+						break;
+						case 'decA':
+						this.doActions(`${this.httpStudioPlayer}${action}${`?clipId=${this.decoderA?.currentClip?.id || 0}`}`) 
+						break; 
+						case 'decACue':
+						this.doActions(`${this.httpStudioPlayer}${action}${`?decoderIndex=0&clipId=${this.selectedClipId || 0}`}`)
+						break;
+						case 'decANext':
+						this.doActions(`${this.httpStudioPlayer}${action}${`?decoderIndex=0`}`)
+						break;			
+						case 'decALoop':
+						this.setLoopClipById(`${this.httpStudioPlayer}${action}${`?clipId=${this.decoderA?.currentClip?.id || 0}`}`)
+						break;
+						case 'decB':
+						this.doActions(`${this.httpStudioPlayer}${action}${`?clipId=${this.decoderB?.currentClip?.id || 0}`}`) 
+						break; 	
+						case 'decBCue':
+						this.doActions(`${this.httpStudioPlayer}${action}${`?decoderIndex=1&clipId=${this.selectedClipId || 0}`}`)
+						break;
+						case 'decBNext':
+						this.doActions(`${this.httpStudioPlayer}${action}${`?decoderIndex=1`}`)
+						break;			
+						case 'decBLoop':
+						this.setLoopClipById(`${this.httpStudioPlayer}${action}${`?clipId=${this.decoderB?.currentClip?.id || 0}`}`)
+						break;
+					}
+				} else {
+						this.doActions(`${this.httpStudioPlayer}${action}`) 
+						return 
+				}
+			break;
+			case 'recorder':
+				this.doActions(`${this.httpRecorder}${action}${`?encoderId=${this.config.encoderId}`}`, body)
+			break;
+			case 'channel':
+				this.doActions(`${this.httpChannelPlayer}${action}${param}`)
+			break;
+		}		
 	}
 
 	/** Call for all the action  */
-	doActions(endpoint){
+	doActions(endpoint, body = null){
 	const response = fetch(endpoint,{
 		method: 'put',
+		body: body ? JSON.stringify(body) : null,
 		headers: {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${this.token}`, 

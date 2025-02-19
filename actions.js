@@ -23,175 +23,245 @@ exports.initActions = function () {
 		name: 'cue',
 		options: [],
 		callback: () => {
-			self.actionCallManager('cue' , 'id');
+			self.actionCallManager('studio', 'cue' , 'id');
 		},
 	}
 	actions['recue'] = {
 		name: 'recue',
 		options: [],
 		callback: () => {
-			self.actionCallManager('recue' , 'id');
+			self.actionCallManager('studio', 'recue' , 'id');
 		},
 	}
 	actions['play'] = {
 		name: 'play',
 		options: [],
 		callback: () => {
-			self.actionCallManager('play' , 'id');
+			self.actionCallManager('studio', 'play' , 'id');
 		},
 	}
 	actions['playGraphics'] = {
 		name: 'playGraphics',
 		options: [],
 		callback: () => {
-			self.actionCallManager('playfirstgraphics' , 'id');
+			self.actionCallManager('studio', 'playfirstgraphics' , 'id');
 		},
 	}
 	actions['pause'] = {
 		name: 'pause',
 		options: [],
 		callback: () => {
-			self.actionCallManager('pause' , 'id');
+			self.actionCallManager('studio', 'pause' , 'id');
 		},
 	}
 	actions['stop'] = {
 		name: 'stop',
 		options: [],
 		callback: () => {
-			self.actionCallManager('stop' , 'id');
+			self.actionCallManager('studio', 'stop' , 'id');
 		},
 	}
 	actions['stopAll'] = {
 		name: 'stopAll',
 		options: [],
 		callback: () => {
-			self.actionCallManager('stopall' , null);
+			self.actionCallManager('studio', 'stopall' , '');
 		},
 	}
 	actions['nextClip'] = {
 		name: 'nextClip',
 		options: [],
 		callback: () => {
-			self.actionCallManager('next' , null);
+			self.actionCallManager('studio', 'next' , '');
 		},
 	}
 	actions['clipUp'] = {
 		name: 'clipUp',
 		options: [],
 		callback: () => {
-			self.actionCallManager('select' , 'clipUp');
+			self.actionCallManager('studio', 'select' , 'clipUp');
 		},
 	}
 	actions['clipDown'] = {
 		name: 'clipDown',
 		options: [],
 		callback: () => {
-			self.actionCallManager('select' , 'clipDown');
+			self.actionCallManager('studio', 'select' , 'clipDown');
 		},
 	}
 	actions['loop'] = {
 		name: 'loop',
 		options: [],
 		callback: () => {
-			self.actionCallManager('loop' , 'loop');
+			self.actionCallManager('studio', 'loop' , 'loop');
 		},
 	}
 	actions['decACue'] = {
 		name: 'cue',
 		options: [],
 		callback: () => {
-			self.actionCallManager('decodercue' , 'decACue');
+			self.actionCallManager('studio', 'decodercue' , 'decACue');
 		},
 	}
 	actions['decARecue'] = {
 		name: 'recue',
 		options: [],
 		callback: () => {
-			self.actionCallManager('recue' , 'decA');
+			self.actionCallManager('studio', 'recue' , 'decA');
 		},
 	}
 	actions['decAPlay'] = {
 		name: 'play',
 		options: [],
 		callback: () => {
-			self.actionCallManager('play' , 'decA');
+			self.actionCallManager('studio', 'play' , 'decA');
 		},
 	}
 	actions['decAPause'] = {
 		name: 'pause',
 		options: [],
 		callback: () => {
-			self.actionCallManager('pause' , 'decA');
+			self.actionCallManager('studio', 'pause' , 'decA');
 		},
 	}
 	actions['decANext'] = {
 		name: 'next',
 		options: [],
 		callback: () => {
-			self.actionCallManager('decodernext' , 'decANext');
+			self.actionCallManager('studio', 'decodernext' , 'decANext');
 		},
 	}
 	actions['decALoop'] = {
 		name: 'loop',
 		options: [],
 		callback: () => {
-			self.actionCallManager('loop' , 'decALoop');
+			self.actionCallManager('studio', 'loop' , 'decALoop');
 		},
 	}
 	actions['decAStop'] = {
 		name: 'stop',
 		options: [],
 		callback: () => {
-			self.actionCallManager('stop' , 'decA');
+			self.actionCallManager('studio', 'stop' , 'decA');
 		},
 	}
 	actions['decBCue'] = {
 		name: 'cue',
 		options: [],
 		callback: () => {
-			self.actionCallManager('decodercue' , 'decBCue');
+			self.actionCallManager('studio', 'decodercue' , 'decBCue');
 		},
 	}
 	actions['decBRecue'] = {
 		name: 'recue',
 		options: [],
 		callback: () => {
-			self.actionCallManager('recue' , 'decB');
+			self.actionCallManager('studio', 'recue' , 'decB');
 		},
 	}
 	actions['decBPlay'] = {
 		name: 'play',
 		options: [],
 		callback: () => {
-			self.actionCallManager('play' , 'decB');
+			self.actionCallManager('studio', 'play' , 'decB');
 		},
 	}
 	actions['decBPause'] = {
 		name: 'pause',
 		options: [],
 		callback: () => {
-			self.actionCallManager('pause' , 'decB');
+			self.actionCallManager('studio', 'pause' , 'decB');
 		},
 	}
 	actions['decBNext'] = {
 		name: 'next',
 		options: [],
 		callback: () => {
-			self.actionCallManager('decodernext' , 'decBNext');
+			self.actionCallManager('studio', 'decodernext' , 'decBNext');
 		},
 	}
 	actions['decBLoop'] = {
 		name: 'loop',
 		options: [],
 		callback: () => {
-			self.actionCallManager('loop' , 'decBLoop');
+			self.actionCallManager('studio', 'loop' , 'decBLoop');
 		},
 	}
 	actions['decBStop'] = {
 		name: 'stop',
 		options: [],
 		callback: () => {
-			self.actionCallManager('stop' , 'decB');
+			self.actionCallManager('studio', 'stop' , 'decB');
+		},
+	}
+	actions['recorderRec'] = {
+		name: 'rec',
+		options: [],
+		callback: () => {
+			self.actionCallManager('recorder', 'rec', '', {recordingID: "", fileName: ""});
+		},
+	}
+	actions['recorderStop'] = {
+		name: 'stop',
+		options: [],
+		callback: () => {
+			self.actionCallManager('recorder', 'stop');
+		},
+	}
+	actions['channelPlay'] = {
+		name: 'play',
+		options: [],
+		callback: () => {
+			self.actionCallManager('channel', 'play');
+		},
+	}
+	actions['channelEmergency'] = {
+		name: 'emergency',
+		options: [],
+		callback: () => {
+			self.actionCallManager('channel', 'emergency');
+		},
+	}
+	actions['channelNext'] = {
+		name: 'next',
+		options: [],
+		callback: () => {
+			self.actionCallManager('channel', 'next');
+		},
+	}
+	actions['channelLoop'] = {
+		name: 'loop',
+		options: [],
+		callback: () => {
+			self.actionCallManager('channel', 'loop', '?loop=1');
+		},
+	}
+	actions['channelUnloop'] = {
+		name: 'unloop',
+		options: [],
+		callback: () => {
+			self.actionCallManager('channel', 'loop', '?loop=0');
+		},
+	}
+	actions['channelPause'] = {
+		name: 'pause',
+		options: [],
+		callback: () => {
+			self.actionCallManager('channel', 'pause');
+		},
+	}
+	actions['channelStop'] = {
+		name: 'stop',
+		options: [],
+		callback: () => {
+			self.actionCallManager('channel', 'stop');
+		},
+	}
+	actions['channelRefresh'] = {
+		name: 'refresh',
+		options: [],
+		callback: () => {
+			self.actionCallManager('channel', 'refresh');
 		},
 	}
 	this.setActionDefinitions(actions)
